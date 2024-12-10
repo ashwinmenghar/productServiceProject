@@ -8,7 +8,7 @@
         <version>3.1.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>dev.naman</groupId>
+    <groupId>dev.ashwin</groupId>
     <artifactId>productServicettsevening</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>productServicettsevening</name>
