@@ -46,13 +46,13 @@ public class ProductController {
         return productService.addNewProduct(product);
     }
 
-    @PutMapping("/{productId}")
-    public String updateProduct(@PathVariable("productId") Long productId) {
-        return "Updating product";
+    @PatchMapping("/{productId}")
+    public ResponseEntity<Product> updateProduct(@PathVariable("productId") Long productId, @RequestBody ProductDto product) {
+        return new ResponseEntity(productService.updateProduct(productId, product), HttpStatus.OK);
     }
 
     @DeleteMapping("/{productId}")
-    public String deleteProduct(@PathVariable("productId") Long productId) {
-        return "Deleting a product with id: " + productId;
+    public ResponseEntity<Product> deleteProduct(@PathVariable("productId") Long productId) throws NotFoundException {
+        return new ResponseEntity(productService.deleteProduct(productId), HttpStatus.OK);
     }
 }

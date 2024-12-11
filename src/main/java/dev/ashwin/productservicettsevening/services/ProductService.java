@@ -1,5 +1,6 @@
 package dev.ashwin.productservicettsevening.services;
 
+import dev.ashwin.productservicettsevening.clients.fakeStoreApi.FakeStoreClient;
 import dev.ashwin.productservicettsevening.clients.fakeStoreApi.FakeStoreProductDto;
 import dev.ashwin.productservicettsevening.dtos.ProductDto;
 import dev.ashwin.productservicettsevening.exceptions.NotFoundException;
@@ -15,9 +16,9 @@ public interface ProductService {
 
     Product addNewProduct(ProductDto product);
 
-    String updateProduct(Long productId, Product product);
+    Product updateProduct(Long productId, ProductDto product);
 
     String replaceProduct(Long productId);
 
-    String deleteProduct(Long productId);
+    Product deleteProduct(Long productId) throws NotFoundException;
 }

@@ -1,5 +1,6 @@
 package dev.ashwin.productservicettsevening.dtos;
 
+import jakarta.annotation.Nullable;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

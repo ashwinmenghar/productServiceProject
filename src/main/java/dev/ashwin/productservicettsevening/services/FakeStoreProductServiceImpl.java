@@ -57,6 +57,19 @@ public class FakeStoreProductServiceImpl implements ProductService {
         return product;
     }
 
+    private FakeStoreProductDto convertProductToFakeStoreProductDto(Long productId, ProductDto product) {
+        FakeStoreProductDto fakeStoreProductDto = new FakeStoreProductDto();
+        fakeStoreProductDto.setId(productId);
+        fakeStoreProductDto.setTitle(product.getTitle());
+        fakeStoreProductDto.setDescription(product.getDescription());
+        fakeStoreProductDto.setPrice(product.getPrice());
+        fakeStoreProductDto.setImage(product.getImage());
+        fakeStoreProductDto.setCategory(product.getCategory());
+
+        return fakeStoreProductDto;
+    }
+
+
     @Override
     public List<Product> getAllProducts() {
         List<FakeStoreProductDto> fakeStoreProductDto = fakeStoreClient.getAllProducts();
@@ -85,39 +98,14 @@ public class FakeStoreProductServiceImpl implements ProductService {
     }
 
     @Override
-    public String updateProduct(Long productId, Product product) {
-        RestTemplate restTemplate = restTemplateBuilder.requestFactory(
-                HttpComponentsClientHttpRequestFactory.class
-        ).build();
+    public Product updateProduct(Long productId, ProductDto product) {
+        FakeStoreProductDto fakeStoreProductDto = convertProductToFakeStoreProductDto(productId, product);
 
-        FakeStoreProductDto fakeStoreProductDto = new FakeStoreProductDto();
-        fakeStoreProductDto.setId(product.getId());
-        fakeStoreProductDto.setTitle(product.getTitle());
-        fakeStoreProductDto.setDescription(product.getDescription());
-        fakeStoreProductDto.setPrice(product.getPrice());
-        fakeStoreProductDto.setImage(product.getImageUrl());
-        fakeStoreProductDto.setCategory(product.getCategory().getName());
-
-
-        ResponseEntity<FakeStoreProductDto> fakeStoreProductDtoResponseEntity = requestForEntity(
-                HttpMethod.PATCH,
-                "https://fakestoreapi.com/products/{id}",
-                fakeStoreProductDto,
-                FakeStoreProductDto.class,
-                productId
-        );
-
-        FakeStoreProductDto fakeStoreProductDtoResponse = restTemplate.patchForObject(
-                "https://fakestoreapi.com/products/{id}",
-                fakeStoreProductDto,
-                FakeStoreProductDto.class,
-                productId
-        );
-
-
-
-
-        return null;
+        try {
+            return convertFakeStoreProductDtoToProduct(fakeStoreClient.updateProduct(productId, fakeStoreProductDto));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String replaceProduct(Long productId) {
@@ -125,7 +113,13 @@ public class FakeStoreProductServiceImpl implements ProductService {
     }
 
     @Override
-    public String deleteProduct(Long productId) {
-        return null;
+    public Product deleteProduct(Long productId) throws NotFoundException {
+        try{
+            FakeStoreProductDto fakeStoreProductDto = fakeStoreClient.deleteProduct(productId);
+            return convertFakeStoreProductDtoToProduct(fakeStoreProductDto);
+        } catch (Exception e) {
+            throw new NotFoundException("Product with id " + productId + " not found for delete operation");
+        }
+
     }
 }
