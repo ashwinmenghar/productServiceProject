@@ -1,6 +1,7 @@
 package dev.ashwin.productservicettsevening.controllers;
 
 import dev.ashwin.productservicettsevening.dtos.ProductDto;
+import dev.ashwin.productservicettsevening.exceptions.NotFoundException;
 import dev.ashwin.productservicettsevening.models.Product;
 import dev.ashwin.productservicettsevening.services.ProductService;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/products")
@@ -26,24 +28,22 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    public ResponseEntity<Product> getSingleProduct(@PathVariable("productId") Long productId) {
+    public ResponseEntity<Product> getSingleProduct(@PathVariable("productId") Long productId) throws NotFoundException {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
         headers.add( "auth-token", "ashwin");
 
-        ResponseEntity<Product> response = new ResponseEntity(
-                productService.getSingleProduct(productId),
-                headers,
-                HttpStatus.OK
-        );
+        Optional<Product> productOptional = productService.getSingleProduct(productId);
 
-        return response;
+        if(productOptional.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity(productOptional.get(), headers, HttpStatus.OK);
     }
 
 
     @PostMapping()
     public Product addNewProduct(@RequestBody ProductDto product) {
-        Product newProduct = productService.addNewProduct(product);
-        return newProduct;
+        return productService.addNewProduct(product);
     }
 
     @PutMapping("/{productId}")
