@@ -18,7 +18,11 @@ class ProductServicettseveningApplicationTests {
     private JTMentorRepository mentorRepository;
 
     @Test
-    void contextLoads() {
+    public void contextLoads() {
+    }
+
+    @Test
+    void printName() {
     }
 
 //    @Test
