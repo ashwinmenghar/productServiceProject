@@ -108,7 +108,7 @@ public class FakeStoreProductServiceImpl implements ProductService {
         }
     }
 
-    public String replaceProduct(Long productId) {
+    public Product replaceProduct(Long productId, ProductDto product) {
         return null;
     }
 
