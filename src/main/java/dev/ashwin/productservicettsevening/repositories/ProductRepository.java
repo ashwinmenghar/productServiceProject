@@ -9,7 +9,11 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Product save(Product product);
+
     Product findProductById(Long id);
+
+//    @Query("update Product p set p = ?1 where u.lastname = ?2")
+//    int setFixedFirstnameFor(String firstname, String lastname);
 
     Product findProductByIdIs(Long id);
 

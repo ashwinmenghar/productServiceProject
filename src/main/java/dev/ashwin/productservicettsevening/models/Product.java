@@ -21,7 +21,7 @@ public class Product extends BaseModel {
     // m <- 1
     // M <-> 1
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Category category;
     private String imageUrl;
 }

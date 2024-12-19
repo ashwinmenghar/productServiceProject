@@ -20,8 +20,6 @@ public class ProductTest {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    private SelfProductService selfProductService;
-
     @Test
     void savingProductsAndCategory() {
 //        Category category = new Category();
@@ -35,14 +33,12 @@ public class ProductTest {
 //        product.setCategory(category);
 //        productRepository.save(product);
 
-        Category category = new Category();
-        category.setName("electronics");
-//        Category savedCategory = categoryRepository.save(category);
+        Category category = categoryRepository.findById(2L).get();
 
         Product product = new Product();
         product.setPrice(101);
         product.setImageUrl("hiii");
-        product.setCategory(category);
+        product.setId(category.getId());
         productRepository.save(product);
     }
 
@@ -104,11 +100,11 @@ public class ProductTest {
         // select * from products where category_id = 2;
         // select * from products where category_id = 52;
 
-        for (Category category: categories) {
-            for (Product product : category.getProducts()) {
-                System.out.println(product.getPrice());
-            }
-        }
+//        for (Category category: categories) {
+//            for (Product product : category.getProducts()) {
+//                System.out.println(product.getPrice());
+//            }
+//        }
     }
 
     @Test
@@ -125,15 +121,15 @@ public class ProductTest {
         // select * from products where category_id = 2;
         // select * from products where category_id = 52;
 
-        for (Product product : category.getProducts()) {
-            System.out.println(product.getPrice());
-        }
+//        for (Product product : category.getProducts()) {
+//            System.out.println(product.getPrice());
+//        }
     }
 
     @Test
     void checkWorkingFine() {
 
-        List<Product> products = selfProductService.getAllProducts();
+//        List<Product> products = selfProductService.getAllProducts();
     }
 
     @Test

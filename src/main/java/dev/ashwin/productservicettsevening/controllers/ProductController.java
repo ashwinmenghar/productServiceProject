@@ -4,6 +4,8 @@ import dev.ashwin.productservicettsevening.dtos.ProductDto;
 import dev.ashwin.productservicettsevening.exceptions.NotFoundException;
 import dev.ashwin.productservicettsevening.models.Product;
 import dev.ashwin.productservicettsevening.services.ProductService;
+import dev.ashwin.productservicettsevening.services.SelfProductService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
@@ -18,7 +20,7 @@ import java.util.Optional;
 public class ProductController {
     private ProductService productService;
 
-    public ProductController( ProductService productService) {
+    public ProductController(@Qualifier("SelfProductService") ProductService productService) {
         this.productService = productService;
     }
 
@@ -47,8 +49,13 @@ public class ProductController {
     }
 
     @PatchMapping("/{productId}")
-    public ResponseEntity<Product> updateProduct(@PathVariable("productId") Long productId, @RequestBody ProductDto product) {
+    public ResponseEntity<Product> updateProduct(@PathVariable("productId") Long productId, @RequestBody ProductDto product) throws NotFoundException {
         return new ResponseEntity(productService.updateProduct(productId, product), HttpStatus.OK);
+    }
+
+    @PutMapping("/{productId}")
+    public ResponseEntity<Product> replaceProduct(@PathVariable("productId") Long productId, @RequestBody ProductDto product) throws NotFoundException {
+        return new ResponseEntity(productService.replaceProduct(productId, product), HttpStatus.OK);
     }
 
     @DeleteMapping("/{productId}")
