@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-@Service(value = "SelfProductService")
+@Service(value = "selfProductService")
 public class SelfProductService implements ProductService {
 
     private ProductRepository productRepository;

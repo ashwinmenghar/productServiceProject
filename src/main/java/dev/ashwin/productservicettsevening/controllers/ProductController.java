@@ -20,13 +20,15 @@ import java.util.Optional;
 public class ProductController {
     private ProductService productService;
 
-    public ProductController(@Qualifier("SelfProductService") ProductService productService) {
+    public ProductController(@Qualifier("fakeStoreProductService") ProductService productService) {
         this.productService = productService;
     }
 
     @GetMapping()
     public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+        List<Product> products = productService.getAllProducts();
+        products.get(0).setPrice(100); /// Bug induced in my code
+        return products;
     }
 
     @GetMapping("/{productId}")
